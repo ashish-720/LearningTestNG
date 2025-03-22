@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TestingAnnotationsSuite">
+    <test name="VerifyLogin">
+        <classes>
+            <class name="pack4_AnnotationsInTstNG.OrangeHRMAnnotations">
+                <methods>
+                    <include name="navigateToApp"/>
+                    <include name="loginToApp"/>
+                    <include name="verifyLogin"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="VerifyAddEmloyeeTab">
+        <classes>
+            <class name="pack4_AnnotationsInTstNG.OrangeHRMAnnotations">
+                <methods>
+                    <include name="navigateToApp"/>
+                    <include name="loginToApp"/>
+                    <include name="verifyLogin"/>
+                    <include name="addEmployee"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

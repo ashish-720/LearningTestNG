@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite" parallel="classes" thread-count="2">
+    <!--Here each test will run sequentially but once test is running let suppose test1, then its classes will be executing
+    in parallel based on two threads. Ex- Thread1-TestClass1, Thread2-TestClass2 and when any one get free then that thread will be used for TeatClass3 -->
+    <!--    Note for every test two thread will be created and then destroyed-->
+    <!--    Here it looks that thread-count is 2 so two threads will get created but in actuality 2 threads for every test classes will be
+    created. Here in our example for test2 also two threads will be created but one is sitting idle as it has only one class-->
+    <!--    Note parallel="classes" makes more sense if it applies to test level not at suite level-->
+    <test name="test1">
+        <classes>
+            <class name="pack15_parallelExecutionInTestNG.TestClass1"/>
+            <class name="pack15_parallelExecutionInTestNG.TestClass2"/>
+            <class name="pack15_parallelExecutionInTestNG.TestClass3"/>
+        </classes>
+    </test>
+    <test name="test2">
+        <classes>
+            <class name="pack15_parallelExecutionInTestNG.TestClass4"></class>
+        </classes>
+    </test>
+</suite>

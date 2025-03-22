@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TestsGroups">
+    <test name="Tests_Grouping">
+        <!--Test level groups calling-->
+        <!--want to create a group which consists of all the test methods ofa particular class GroupConceptClass3
+        Here no matter whether individual methods have the groups assigned or not but they all are part of class level group-->
+        <groups>
+            <run>
+                <include name="All"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass3"/>
+        </classes>
+    </test>
+</suite>

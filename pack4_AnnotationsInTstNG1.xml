@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="AnnotationsLearning">
+    <test name="LearningAnnotationsBasic">
+        <classes>
+            <class name="pack4_AnnotationsInTstNG.AnnotationsInTestNG">
+                <methods>
+                    <include name="test1"/>
+
+                    <include name="test2"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

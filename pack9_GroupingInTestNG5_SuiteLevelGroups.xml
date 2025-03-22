@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TestsGroups">
+    <!--If we define the groups to run at suite level then it applies to all the tests in the xml suite-->
+    <groups>
+        <run>
+            <include name="sanity"/>
+        </run>
+    </groups>
+    <test name="Tests_Grouping1">
+        <groups>
+            <!--here sanity and regressions both are applicable-->
+            <run>
+                <include name="regressions"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass1"/>
+        </classes>
+    </test>
+    <test name="Tests_Grouping2">
+        <classes>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass2"/>
+        </classes>
+    </test>
+    <test name="Tests_Grouping3">
+        <classes>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass3"/>
+        </classes>
+    </test>
+</suite>

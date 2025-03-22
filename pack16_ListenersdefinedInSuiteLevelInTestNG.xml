@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Listeners defined at suite level">
+    <listeners>
+        <listener class-name="pack16_ListenersInTestNG.ItestListenerOverRidingClass"/>
+    </listeners>
+    <test name="Listeners1">
+        <classes>
+            <class name="pack16_ListenersInTestNG.MyTestClass2"/>
+        </classes>
+    </test>
+    <test name="Listeners2">
+        <classes>
+            <class name="pack16_ListenersInTestNG.MyTestClass3"/>
+        </classes>
+    </test>
+</suite>

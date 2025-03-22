@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TestsGroups">
+    <test name="Tests_Grouping_dailyBuild">
+        <!--Test level groups calling-->
+        <!--want to create and execute only those test methods which are part of smoke/sanity
+         from GroupConceptClass1,GroupConceptClass2 as daily build-->
+        <groups>
+            <define name="dailyBuild">
+                <include name="smoke"/>
+                <include name="sanity"/>
+            </define>
+            <run>
+                <include name="dailyBuild"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass1"/>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass2"/>
+        </classes>
+    </test>
+    <test name="Tests_Grouping_weeklyBuild">
+        <!--Test level groups calling-->
+        <!--want to create and execute only those test methods which are part of smoke/sanity/regressions
+        from GroupConceptClass1,GroupConceptClass2 as weekly build-->
+        <groups>
+            <define name="weeklyBuild">
+                <include name="smoke"/>
+                <include name="sanity"/>
+                <include name="regressions"/>
+            </define>
+            <run>
+                <include name="weeklyBuild"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass1"/>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass2"/>
+        </classes>
+    </test>
+</suite>

@@ -2,18 +2,20 @@ package pack17_TestingDasCase;
 
 import org.testng.annotations.Test;
 
-public class CM1 {
+public class CM2 {
 
-    @Test
-    public void cm11(){
-        System.out.println("In cm11");
+    @Test(priority = 0)
+    public void cm21() {
+        System.out.println("In cm21");
     }
-    @Test
-    public void cm12(){
-        System.out.println("In cm12");
+
+    @Test(priority = 1)
+    public void cm22() {
+        System.out.println("In cm22");
     }
-    @Test
-    public void cm13(){
-        System.out.println("In cm13");
+
+    @Test(priority = 2)
+    public void cm23() {
+        System.out.println("In cm23");
     }
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="MyFirstSuite">
+    <test name="TestCase1_OrangeHRMLogin">
+        <classes>
+            <class name="pack2_GenerateTestNGXmlFile.OrangeHRM1">
+                <methods>
+                    <include name="launchApp"/>
+                    <include name="loginToApp"/>
+                    <include name="verifyLogin"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="TestCase2_OpenAddEmployeeTab">
+        <classes>
+            <class name="pack2_GenerateTestNGXmlFile.OrangeHRM1">
+                <methods>
+                    <include name="launchApp"/>
+                    <include name="loginToApp"/>
+                    <include name="verifyLogin"/>
+                    <include name="addEmployee"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="TestCase3_TestGoogle">
+        <classes>
+            <class name="pack1_CreateFirstTestNGTest.FirstTestNG">
+                <methods>
+                    <include name="testGoogle"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

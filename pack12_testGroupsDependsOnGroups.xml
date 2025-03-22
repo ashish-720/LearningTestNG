@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="DependsOnGroups">
+    <test name="GroupsDependsOnGroups">
+        <groups>
+            <dependencies>
+                <!-- if any test in smoke fails then sanity will skip and if sanity skip regressions skipped-->
+                <group name="sanity" depends-on="smoke"></group>
+                <group name="regressions" depends-on="sanity"></group>
+            </dependencies>
+        </groups>
+        <classes>
+            <class name="pack12_testGroupsDependsOnGroups.TestGroupsDependsOnGroups"/>
+        </classes>
+    </test>
+</suite>

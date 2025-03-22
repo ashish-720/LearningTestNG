@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TestsGroups">
+    <test name="Tests_Grouping">
+        <!--Test level groups calling-->
+        <!--want to execute only those test methods which are part of smoke and sanity from GroupConceptClass1,GroupConceptClass2-->
+        <groups>
+            <run>
+                <include name="smoke"/>
+                <include name="sanity"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass1"/>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass2"/>
+        </classes>
+    </test>
+</suite>

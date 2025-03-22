@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Data provider thread count" data-provider-thread-count="4">
+    <test name="Data Provider parallel run">
+        <classes>
+            <class name="pack13_dataProviderInTestNG.DataProvider6">
+                <methods>
+                    <include name="loginToApp"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
