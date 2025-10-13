@@ -2,48 +2,95 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- Model version for Maven. Always '4.0.0' for modern Maven projects. -->
     <modelVersion>4.0.0</modelVersion>
+    <groupId>org.example</groupId>   <!-- Group (organisation or company) identifier -->
+    <artifactId>LearningTestNG</artifactId> <!-- Artifact (projectname) identifier -->
+    <version>1.0-SNAPSHOT</version>   <!-- Project version (SNAPSHOT = under active development) -->
 
-    <groupId>org.example</groupId>
-    <artifactId>LearningTestNG</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
+    <!--
+        ========= Version Management with Properties =========
+        Centralizes dependency version numbers for easy upgrades/maintenance.
+    -->
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>   <!-- Source code Java version -->
+        <maven.compiler.target>8</maven.compiler.target>   <!-- Target compiled bytecode Java version -->
+        <testng.version>6.14.3</testng.version>            <!-- TestNG library for testing -->
+        <selenium.version>3.141.59</selenium.version>      <!-- Selenium WebDriver library -->
+        <webdrivermanager.version>5.7.0</webdrivermanager.version> <!-- Binary manager for browser drivers -->
+        <poi.version>4.1.2</poi.version>                   <!-- Apache POI for Excel file handling -->
     </properties>
+
+    <!--
+      ========= Project Dependencies =========
+      All libraries your code depends on go here.
+      Use ${...} for property-based versioning.
+      Each dependency may have a <scope>:
+        - test: for testing only
+        - compile: for main code (default)
+  -->
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+        <!-- TestNG: Java test framework, used only when testing -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.14.3</version>
-            <scope>test</scope>
+            <version>${testng.version}</version>
+            <scope>test</scope>  <!-- Available ONLY for test code, not for main code -->
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+        <!-- Selenium Java: Main library for browser automation -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>3.141.59</version>
+            <version>${selenium.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+        <!-- WebDriverManager: Manages browser driver binaries automatically -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.7.0</version>
+            <version>${webdrivermanager.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <!-- Apache POI: Library for working with XLS (Excel) files -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>4.1.2</version>
+            <version>${poi.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+        <!-- Apache POI OOXML: Needed for XLSX (new Excel format) files -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>4.1.2</version>
+            <version>${poi.version}</version>
         </dependency>
-
     </dependencies>
+
+    <!--
+    ========= Build Plugins Section =========
+    Plugins to extend and automate project actions
+-->
+    <build>
+        <plugins>
+            <!-- Maven Surefire Plugin: Executes automated tests.
+                 'suiteXmlFiles' links your TestNG suite configuration (testng.xml).
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>testng.xml</suiteXmlFile> <!-- Points to custom TestNG suite file -->
+                    </suiteXmlFiles>
+                </configuration>
+            </plugin>
+            <!-- Additional plugins (e.g., for reporting, building) can be added here -->
+        </plugins>
+    </build>
+
+    <!--
+        ========= [Optional] Other Sections =========
+        You could add <repositories> or <profiles> blocks for customization,
+        but those are not needed for basic Selenium/TestNG setups.
+    -->
+
 </project>
