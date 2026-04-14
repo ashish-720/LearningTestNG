@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="pack1_CreateFirstTestNGTest">
+    <test name="Testing Basic Functionality of TestNG">
+        <classes>
+            <class name="pack1_CreateFirstTestNGTest.FirstTestNG"></class>
+        </classes>
+    </test>
+</suite>
