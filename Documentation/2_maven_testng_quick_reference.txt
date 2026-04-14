@@ -1,0 +1,99 @@
+Maven + TestNG + Surefire Quick Reference
+
+1. pom.xml Basics
+- groupId, artifactId, version identify the project.
+- <properties> can define versions: testng.version, selenium.version, etc.
+- <dependencies> add libraries: TestNG, Selenium, WebDriverManager, Apache POI.
+
+2. Maven Surefire Plugin + TestNG
+- Surefire runs tests during `mvn test`.
+- Configure TestNG suites via:
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.2.5</version>
+    <configuration>
+      <suiteXmlFiles>
+        <suiteXmlFile>pack1_CreateFirstTestNGTest.xml</suiteXmlFile>
+      </suiteXmlFiles>
+    </configuration>
+  </plugin>
+
+3. testng.xml Purpose
+- Controls which tests run, in what order, and how:
+  * Select specific classes/methods.
+  * Use groups (smoke, regression).
+  * Run in parallel.
+  * Pass parameters.
+- Basic structure:
+  <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+  <suite name="MySuite">
+    <test name="Smoke">
+      <classes>
+        <class name="com.example.LoginTest"/>
+      </classes>
+    </test>
+  </suite>
+
+4. Multiple testng.xml Files
+- Example files:
+  smoke.xml
+  regression.xml
+- Master suite that includes both:
+  <suite name="Master">
+    <suite-files>
+      <suite-file path="smoke.xml"/>
+      <suite-file path="regression.xml"/>
+    </suite-files>
+  </suite>
+
+5. Running Suites
+- Default (from pom.xml):
+  mvn test
+- Override from command line (Surefire property):
+  mvn test -Dsurefire.suiteXmlFiles=pack2_GenerateTestNGXmlFile.xml
+- Multiple suites:
+  mvn test -Dsurefire.suiteXmlFiles=pack1_CreateFirstTestNGTest.xml,pack2_GenerateTestNGXmlFile.xml
+
+6. Making pom.xml Flexible
+- Use a property with default:
+  <suiteXmlFiles>
+    <suiteXmlFile>${suiteXmlFile:pack1_CreateFirstTestNGTest.xml}</suiteXmlFile>
+  </suiteXmlFiles>
+- Then run:
+  mvn test -DsuiteXmlFile=pack2_GenerateTestNGXmlFile.xml
+
+7. JaCoCo (Optional)
+- Measures code coverage of your tests.
+- Typical config:
+  <plugin>
+    <groupId>org.jacoco</groupId>
+    <artifactId>jacoco-maven-plugin</artifactId>
+    <version>0.8.12</version>
+    <executions>
+      <execution>
+        <goals>
+          <goal>prepare-agent</goal>
+        </goals>
+      </execution>
+      <execution>
+        <id>report</id>
+        <phase>test</phase>
+        <goals>
+          <goal>report</goal>
+        </goals>
+      </execution>
+    </executions>
+  </plugin>
+
+8. Maven Compiler Plugin (Optional but Recommended)
+- Ensures correct Java version (e.g., 8) and compiler options:
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.13.0</version>
+    <configuration>
+      <source>8</source>
+      <target>8</target>
+    </configuration>
+  </plugin>
