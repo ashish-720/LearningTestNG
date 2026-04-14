@@ -82,7 +82,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>pack2_GenerateTestNGXmlFile.xml
+                        <suiteXmlFile>pack1_CreateFirstTestNGTest.xml
                         </suiteXmlFile> <!-- Points to custom TestNG suite file -->
                     </suiteXmlFiles>
                 </configuration>
