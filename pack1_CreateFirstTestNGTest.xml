@@ -3,7 +3,12 @@
 <suite name="pack1_CreateFirstTestNGTest">
     <test name="Testing Basic Functionality of TestNG">
         <classes>
-            <class name="pack1_CreateFirstTestNGTest.FirstTestNG"></class>
+            <class name="pack1_CreateFirstTestNGTest.FirstTestNG">
+                <methods>
+                    <include name="testGoogle"/>
+                    <include name="testFacebook"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>
