@@ -1,2 +1,228 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"><suite name="All Test Suite"><test verbose="2" preserve-order="true" name="C:/Users/samal/IdeaProjects/LearningTestNG"><classes><class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept1"><methods><include name="createShipment"/><include name="trackShipment"/><include name="cancelShipment"/></methods></class><class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept2"><methods><include name="createShipment"/></methods></class><class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept3"><methods><include name="createShipment"/></methods></class><class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept4"><methods><include name="createShipment"/></methods></class><class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept5"><methods><include name="createShipment"/></methods></class><class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept6"><methods><include name="createShipment"/></methods></class><class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept7"><methods><include name="createShipment"/></methods></class><class name="pack13_dataProviderInTestNG.DataProvider1"><methods><include name="loginToApp"/><include name="loginToApp_2"/></methods></class><class name="pack13_dataProviderInTestNG.DataProvider2"><methods><include name="loginToApp"/></methods></class><class name="pack13_dataProviderInTestNG.DataProvider3"><methods><include name="printStudentData"/><include name="printStudentList"/></methods></class><class name="pack13_dataProviderInTestNG.DataProvider4"><methods><include name="printStudentList"/><include name="printStudentData"/></methods></class><class name="pack13_dataProviderInTestNG.DataProvider5"><methods><include name="printSamplesData"/></methods></class><class name="pack13_dataProviderInTestNG.DataProvider6"><methods><include name="loginToApp"/></methods></class><class name="pack15_parallelExecutionInTestNG.TestClass1"><methods><include name="m1"/><include name="m2"/><include name="m3"/><include name="m4"/></methods></class><class name="pack15_parallelExecutionInTestNG.TestClass2"><methods><include name="m5"/><include name="m6"/><include name="m7"/><include name="m8"/></methods></class><class name="pack15_parallelExecutionInTestNG.TestClass3"><methods><include name="m9"/><include name="m10"/><include name="m11"/><include name="m12"/></methods></class><class name="pack15_parallelExecutionInTestNG.TestClass4"><methods><include name="m13"/><include name="m14"/><include name="m15"/><include name="m16"/></methods></class><class name="pack16_ListenersInTestNG.MyTestClass"><methods><include name="m1"/><include name="m2"/></methods></class><class name="pack16_ListenersInTestNG.MyTestClass2"><methods><include name="m1"/><include name="m2"/></methods></class><class name="pack16_ListenersInTestNG.MyTestClass3"><methods><include name="m4"/><include name="m5"/></methods></class><class name="pack1_CreateFirstTestNGTest.FirstTestNG"><methods><include name="testGoogle"/><include name="testFacebook"/></methods></class><class name="pack2_GenerateTestNGXmlFile.OrangeHRM1"><methods><include name="launchApp"/><include name="loginToApp"/><include name="verifyLogin"/><include name="addEmployee"/></methods></class><class name="pack3_HardAndSoftAssertInTestNG.HardAssertExample"><methods><include name="testFacebook"/><include name="testFacebookCertainScenarios"/></methods></class><class name="pack4_AnnotationsInTstNG.AnnotationsInTestNG"><methods><include name="test1"/><include name="test2"/></methods></class><class name="pack4_AnnotationsInTstNG.OrangeHRMAnnotations"><methods><include name="navigateToApp"/><include name="loginToApp"/><include name="verifyLogin"/><include name="addEmployee"/></methods></class><class name="pack5_ParametersInTestNG.ParametersConceptInTestNG_UsingOrangeHRM"><methods><include name="navigateToApp"/><include name="loginToApp"/><include name="verifyLogin"/><include name="addEmployee"/></methods></class><class name="pack5_ParametersInTestNG.ParametersOptionalConcept"><methods><include name="navigateToApp"/><include name="verifyLogin"/><include name="addEmployee"/></methods></class><class name="pack6_EnabledDisabledTestInTestNG.EnabledAndDisabledTestConcept"><methods><include name="navigateToApp"/><include name="verifyLogin"/><include name="addEmployee"/></methods></class><class name="pack7_PriorityInTestNG.PriorityCaseStudy"><methods><include name="navigateToWebSite"/><include name="createAnAccount"/><include name="login"/><include name="searchForFlight"/><include name="bookAnTicket"/><include name="downloadTheTicket"/><include name="logout"/></methods></class><class name="pack8_IgnoreConceptInTestNG.IgnoreSpecificTestMethodsInTestNG"><methods><include name="m1"/><include name="m2"/><include name="m3"/><include name="m4"/><include name="m5"/></methods></class><class name="pack8_IgnoreConceptInTestNG.IgnoreWholeTestClass"><methods><include name="m1"/><include name="m2"/><include name="m3"/><include name="m4"/><include name="m5"/></methods></class><class name="pack9_GroupingInTestNG.GroupConceptClass1"><methods><include name="m4"/></methods></class><class name="pack9_GroupingInTestNG.GroupConceptClass2"><methods><include name="m7"/></methods></class><class name="pack9_GroupingInTestNG.GroupConceptClass3"><methods><include name="m4"/></methods></class></classes></test></suite>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="C:/Users/samal/IdeaProjects/LearningTestNG">
+        <classes>
+            <class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept1">
+                <methods>
+                    <include name="createShipment"/>
+                    <include name="trackShipment"/>
+                    <include name="cancelShipment"/>
+                </methods>
+            </class>
+            <class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept2">
+                <methods>
+                    <include name="createShipment"/>
+                </methods>
+            </class>
+            <class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept3">
+                <methods>
+                    <include name="createShipment"/>
+                </methods>
+            </class>
+            <class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept4">
+                <methods>
+                    <include name="createShipment"/>
+                </methods>
+            </class>
+            <class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept5">
+                <methods>
+                    <include name="createShipment"/>
+                </methods>
+            </class>
+            <class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept6">
+                <methods>
+                    <include name="createShipment"/>
+                </methods>
+            </class>
+            <class name="pack10_dependsOnMethodsInTestNG.DependsOnMethodsConcept7">
+                <methods>
+                    <include name="createShipment"/>
+                </methods>
+            </class>
+            <class name="pack13_dataProviderInTestNG.DataProvider1">
+                <methods>
+                    <include name="loginToApp"/>
+                    <include name="loginToApp_2"/>
+                </methods>
+            </class>
+            <class name="pack13_dataProviderInTestNG.DataProvider2">
+                <methods>
+                    <include name="loginToApp"/>
+                </methods>
+            </class>
+            <class name="pack13_dataProviderInTestNG.DataProvider3">
+                <methods>
+                    <include name="printStudentData"/>
+                    <include name="printStudentList"/>
+                </methods>
+            </class>
+            <class name="pack13_dataProviderInTestNG.DataProvider4">
+                <methods>
+                    <include name="printStudentList"/>
+                    <include name="printStudentData"/>
+                </methods>
+            </class>
+            <class name="pack13_dataProviderInTestNG.DataProvider5">
+                <methods>
+                    <include name="printSamplesData"/>
+                </methods>
+            </class>
+            <class name="pack13_dataProviderInTestNG.DataProvider6">
+                <methods>
+                    <include name="loginToApp"/>
+                </methods>
+            </class>
+            <class name="pack15_parallelExecutionInTestNG.TestClass1">
+                <methods>
+                    <include name="m1"/>
+                    <include name="m2"/>
+                    <include name="m3"/>
+                    <include name="m4"/>
+                </methods>
+            </class>
+            <class name="pack15_parallelExecutionInTestNG.TestClass2">
+                <methods>
+                    <include name="m5"/>
+                    <include name="m6"/>
+                    <include name="m7"/>
+                    <include name="m8"/>
+                </methods>
+            </class>
+            <class name="pack15_parallelExecutionInTestNG.TestClass3">
+                <methods>
+                    <include name="m9"/>
+                    <include name="m10"/>
+                    <include name="m11"/>
+                    <include name="m12"/>
+                </methods>
+            </class>
+            <class name="pack15_parallelExecutionInTestNG.TestClass4">
+                <methods>
+                    <include name="m13"/>
+                    <include name="m14"/>
+                    <include name="m15"/>
+                    <include name="m16"/>
+                </methods>
+            </class>
+            <class name="pack16_ListenersInTestNG.MyTestClass">
+                <methods>
+                    <include name="m1"/>
+                    <include name="m2"/>
+                </methods>
+            </class>
+            <class name="pack16_ListenersInTestNG.MyTestClass2">
+                <methods>
+                    <include name="m1"/>
+                    <include name="m2"/>
+                </methods>
+            </class>
+            <class name="pack16_ListenersInTestNG.MyTestClass3">
+                <methods>
+                    <include name="m4"/>
+                    <include name="m5"/>
+                </methods>
+            </class>
+            <class name="pack1_CreateFirstTestNGTest.FirstTestNG">
+                <methods>
+                    <include name="testGoogle"/>
+                    <include name="testFacebook"/>
+                </methods>
+            </class>
+            <class name="pack2_GenerateTestNGXmlFile.OrangeHRM1">
+                <methods>
+                    <include name="launchApp"/>
+                    <include name="loginToApp"/>
+                    <include name="verifyLogin"/>
+                    <include name="addEmployee"/>
+                </methods>
+            </class>
+            <class name="pack3_HardAndSoftAssertInTestNG.HardAssertExample">
+                <methods>
+                    <include name="testFacebook"/>
+                    <include name="testFacebookCertainScenarios"/>
+                </methods>
+            </class>
+            <class name="pack4_AnnotationsInTstNG.AnnotationsInTestNG">
+                <methods>
+                    <include name="test1"/>
+                    <include name="test2"/>
+                </methods>
+            </class>
+            <class name="pack4_AnnotationsInTstNG.OrangeHRMAnnotations">
+                <methods>
+                    <include name="navigateToApp"/>
+                    <include name="loginToApp"/>
+                    <include name="verifyLogin"/>
+                    <include name="addEmployee"/>
+                </methods>
+            </class>
+            <class name="pack5_ParametersInTestNG.ParametersConceptInTestNG_UsingOrangeHRM">
+                <methods>
+                    <include name="navigateToApp"/>
+                    <include name="loginToApp"/>
+                    <include name="verifyLogin"/>
+                    <include name="addEmployee"/>
+                </methods>
+            </class>
+            <class name="pack5_ParametersInTestNG.ParametersOptionalConcept">
+                <methods>
+                    <include name="navigateToApp"/>
+                    <include name="verifyLogin"/>
+                    <include name="addEmployee"/>
+                </methods>
+            </class>
+            <class name="pack6_EnabledDisabledTestInTestNG.EnabledAndDisabledTestConcept">
+                <methods>
+                    <include name="navigateToApp"/>
+                    <include name="verifyLogin"/>
+                    <include name="addEmployee"/>
+                </methods>
+            </class>
+            <class name="pack7_PriorityInTestNG.PriorityCaseStudy">
+                <methods>
+                    <include name="navigateToWebSite"/>
+                    <include name="createAnAccount"/>
+                    <include name="login"/>
+                    <include name="searchForFlight"/>
+                    <include name="bookAnTicket"/>
+                    <include name="downloadTheTicket"/>
+                    <include name="logout"/>
+                </methods>
+            </class>
+            <class name="pack8_IgnoreConceptInTestNG.IgnoreSpecificTestMethodsInTestNG">
+                <methods>
+                    <include name="m1"/>
+                    <include name="m2"/>
+                    <include name="m3"/>
+                    <include name="m4"/>
+                    <include name="m5"/>
+                </methods>
+            </class>
+            <class name="pack8_IgnoreConceptInTestNG.IgnoreWholeTestClass">
+                <methods>
+                    <include name="m1"/>
+                    <include name="m2"/>
+                    <include name="m3"/>
+                    <include name="m4"/>
+                    <include name="m5"/>
+                </methods>
+            </class>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass1">
+                <methods>
+                    <include name="m4"/>
+                </methods>
+            </class>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass2">
+                <methods>
+                    <include name="m7"/>
+                </methods>
+            </class>
+            <class name="pack9_GroupingInTestNG.GroupConceptClass3">
+                <methods>
+                    <include name="m4"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

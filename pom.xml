@@ -72,6 +72,9 @@
         <plugins>
             <!-- Maven Surefire Plugin: Executes automated tests.
                  'suiteXmlFiles' links your TestNG suite configuration (testng.xml).
+                 The Surefire Plugin is what runs your tests when you do mvn test. By default it looks for JUnit tests,
+                 but here you've told it: "use my testng.xml suite file instead."
+                 That testng.xml file is where you control which test classes/methods run, in what order, with how many threads, etc.
             -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -79,9 +82,52 @@
                 <version>3.2.5</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile> <!-- Points to custom TestNG suite file -->
+                        <suiteXmlFile>pack2_GenerateTestNGXmlFile.xml
+                        </suiteXmlFile> <!-- Points to custom TestNG suite file -->
                     </suiteXmlFiles>
                 </configuration>
+            </plugin>
+            <!-- Maven Compiler Plugin explicitly controls Java compilation settings that Maven otherwise assumes with defaults.
+
+            Why It's Needed
+            Maven includes compiler plugin by default (version ~3.1 in super POM), but defaults to Java 5 compatibility regardless of your JDK. Your pom.xml uses <maven.compiler.source>8</maven.compiler.source> properties,
+            but explicit plugin config overrides ensures:
+            Java 8+ features compile correctly (lambdas, streams).
+            Annotation processing for Lombok or similar.
+            Custom compiler args like -Xlint warnings.-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+
+
+            <!-- Code coverage
+            JaCoCo (Java Code Coverage) is a plugin that measures how much of your Java code your tests actually execute.
+            Core Functionality
+            It instruments your bytecode during test runs (via a Java agent) to track:
+            Line coverage: Which code lines ran.
+            Branch coverage: If/else paths taken.
+            Method/Class coverage: Functions and classes touched.
+            For your TestNG/Selenium project, it reveals gaps like "this WebDriver method never tested" or "Excel reader untested."
+            Run mvn jacoco:report manually after tests to see results instantly.
+            Creates target/site/jacoco/index.html—open in browser for color-coded coverage (green=fully tested, red=missed).
+            -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.11</version>
+                <executions>
+                    <execution> <!-- Bind to phases -->
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!-- Additional plugins (e.g., for reporting, building) can be added here -->
         </plugins>
