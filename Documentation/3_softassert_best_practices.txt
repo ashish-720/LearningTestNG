@@ -1,0 +1,139 @@
+SoftAssert in TestNG – Pitfall and Best Practice
+
+1. What is SoftAssert?
+- SoftAssert is a TestNG class (org.testng.asserts.SoftAssert) that allows multiple assertions to be executed in a single test method without stopping at the first failure.
+- All failures are collected internally and only thrown when assertAll() is called.
+
+2. How SoftAssert Works
+- During the test, each softAssert.assertXxx(...) call records a pass or failure.
+- The test method continues executing even if some soft assertions fail.
+- At the end of the test, softAssert.assertAll() must be called to:
+  - Throw a combined assertion error if there were any failures.
+  - Mark the test as FAILED in TestNG.
+- If assertAll() is never called, the test will appear as PASSED even if some soft assertions failed.
+
+3. The Pitfall: Sharing SoftAssert Across Tests
+- Problem scenario:
+  - A single SoftAssert instance is stored as a field in the test class and reused across multiple @Test methods.
+  - Example:
+    SoftAssert soft = new SoftAssert();
+
+    @Test
+    public void testOne() {
+        soft.assertTrue(false, "Failure from testOne");
+        // no assertAll() here
+    }
+
+    @Test
+    public void testTwo() {
+        soft.assertTrue(true, "Condition in testTwo");
+        soft.assertAll();
+    }
+- What happens?
+  - soft keeps an internal list of failures from testOne.
+  - testTwo runs, adds its own checks, and then calls assertAll().
+  - assertAll() now throws an error that includes the old failure from testOne plus any new failures.
+  - Result: testTwo fails because of a historical failure coming from testOne, even if testTwo itself was logically correct.
+- This is called cross-test contamination and breaks test isolation.
+
+4. Why This is Dangerous
+- Test isolation principle:
+  - Each test method should be independent and self-contained.
+  - A failure in one test must not affect the result of another test.
+- Sharing a SoftAssert instance means:
+  - Failures can leak from one test to another.
+  - Debugging becomes confusing because a failing test may show messages from a different test.
+  - CI reports become unreliable: it is unclear which test actually has the problem.
+
+5. Best Practice: One SoftAssert Per Test (The Fix)
+- Always create a fresh SoftAssert instance inside each @Test method, or reinitialize it before each test.
+
+5.1. Per-method SoftAssert (recommended)
+
+    @Test
+    public void testOne() {
+        SoftAssert soft = new SoftAssert();
+        soft.assertTrue(false, "Failure from testOne");
+        soft.assertAll();
+    }
+
+    @Test
+    public void testTwo() {
+        SoftAssert soft = new SoftAssert();
+        soft.assertTrue(true, "Condition in testTwo");
+        soft.assertAll();
+    }
+
+- Here, each test has its own SoftAssert object.
+- Failures are scoped strictly to the test where they occur.
+
+5.2. Using @BeforeMethod to reset SoftAssert
+
+    public class MyTests {
+        SoftAssert soft;
+
+        @BeforeMethod
+        public void setUp() {
+            soft = new SoftAssert(); // new instance before every @Test
+        }
+
+        @Test
+        public void testOne() {
+            soft.assertTrue(false, "Failure from testOne");
+            soft.assertAll();
+        }
+
+        @Test
+        public void testTwo() {
+            soft.assertTrue(true, "Condition in testTwo");
+            soft.assertAll();
+        }
+    }
+
+- This approach is useful if you prefer using a class field but still guarantee a fresh SoftAssert per test.
+
+6. Comparison: Wrong vs Correct Usage
+
+Wrong (shared instance):
+
+    public class SoftAssertSharedDemo {
+        SoftAssert soft = new SoftAssert();
+
+        @Test
+        public void testOne() {
+            soft.assertTrue(false, "Failure from testOne");
+            // missing assertAll()
+        }
+
+        @Test
+        public void testTwo() {
+            soft.assertTrue(true, "Condition in testTwo");
+            soft.assertAll(); // fails because of testOne's previous failure
+        }
+    }
+
+Correct (per-test instance):
+
+    public class SoftAssertPerTestDemo {
+
+        @Test
+        public void testOne() {
+            SoftAssert soft = new SoftAssert();
+            soft.assertTrue(false, "Failure from testOne");
+            soft.assertAll(); // testOne fails
+        }
+
+        @Test
+        public void testTwo() {
+            SoftAssert soft = new SoftAssert();
+            soft.assertTrue(true, "Condition in testTwo");
+            soft.assertAll(); // testTwo passes
+        }
+    }
+
+7. Key Takeaways
+- SoftAssert lets you continue execution and collect multiple assertion failures in a single test.
+- Always call assertAll() at the end of the test method to report failures.
+- Never reuse the same SoftAssert instance across different tests without resetting it.
+- Prefer creating a new SoftAssert inside each test or initializing it in @BeforeMethod.
+- Following these practices keeps your tests isolated, reliable, and easier to debug.

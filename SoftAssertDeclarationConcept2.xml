@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="SoftAssertDeclarationConcept2">
+    <test name="SoftAssertDeclarationConcept2">
+        <classes>
+            <class name="pack3_HardAndSoftAssertInTestNG.SoftAssertDeclarationConcept2"></class>
+        </classes>
+    </test>
+</suite>
