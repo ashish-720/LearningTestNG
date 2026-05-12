@@ -75,6 +75,17 @@
                  The Surefire Plugin is what runs your tests when you do mvn test. By default it looks for JUnit tests,
                  but here you've told it: "use my testng.xml suite file instead."
                  That testng.xml file is where you control which test classes/methods run, in what order, with how many threads, etc.
+                 You run: mvn test
+
+    │
+    ▼
+Maven reads pom.xml
+    │
+    ├─ Downloads dependencies → local .m2 cache
+    │
+    ├─ Compiles src/main and src/test with Java 8
+    │
+    └─ Surefire Plugin runs tests → reads testng.xml → executes @Test methods
             -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

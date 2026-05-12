@@ -97,3 +97,86 @@ Maven + TestNG + Surefire Quick Reference
       <target>8</target>
     </configuration>
   </plugin>
+
+9. mvn test — What Actually Happens
+   When you run mvn test in your project specifically:
+   mvn test
+       │
+       ├─ 1. validate     → pom.xml looks fine ✓
+       │
+       ├─ 2. compile      → compiles src/main/java (your Page Objects,
+       │                    utilities, base classes etc.)
+       │
+       ├─ 3. test-compile → compiles src/test/java (your @Test classes)
+       │
+       └─ 4. test         → Surefire plugin kicks in
+                                │
+                                └─ reads your testng.xml
+                                        │
+                                        └─ runs all @Test methods defined there
+                                                │
+                                                ├─ Passes ✓ → BUILD SUCCESS
+                                                └─ Fails  ✗ → BUILD FAILURE
+
+10. What is the /target folder?
+    Every time Maven compiles or packages, output goes into /target:
+    target/
+      ├── classes/          ← compiled main code (.class files)
+      ├── test-classes/     ← compiled test code (.class files)
+      ├── surefire-reports/ ← test results (XML + HTML reports)
+      └── LearningTestNG-1.0-SNAPSHOT.jar  ← produced by mvn package
+
+11. Quick Reference Card
+mvn validate          → just check pom.xml
+mvn compile           → compile main code only
+mvn test-compile      → compile main + test code
+mvn test              → compile everything + run tests  ← you'll use this most
+mvn clean test        → delete target + run tests fresh ← safest option
+mvn package           → compile + test + create JAR
+mvn install           → package + save to local .m2 cache
+mvn clean install     → most common full build command
+
+12. In Case you want to run the test from terminal. You need maven downloaded and java installed and corresponding HOME path set
+Open Command Prompt and run:
+where mvn
+If it returns nothing, Maven is not on PATH. Also check:
+java -version
+Java must be installed first — Maven needs it.
+Step 2 — Download Maven
+Go to: https://maven.apache.org/download.cgi
+Download the Binary zip archive — something like:
+apache-maven-3.9.x-bin.zip
+Step 3 — Extract It
+Extract to a simple path like:
+C:\Program Files\Apache\maven
+Avoid spaces and deep nesting. After extraction you should see:
+C:\Program Files\Apache\maven\
+    ├── bin\
+    │    └── mvn.cmd   ← this is what CMD calls
+    ├── lib\
+    └── conf\
+Step 4 — Set Environment Variables
+This is the most important step. You need to set two things:
+4a. Create MAVEN_HOME
+
+Search "Environment Variables" in Windows Start
+Click "Edit the system environment variables"
+Click "Environment Variables" button
+Under System Variables → click New
+Variable name:  MAVEN_HOME
+Variable value: C:\Program Files\Apache\maven
+
+4b. Add to PATH
+
+In the same System Variables section
+Find and select Path → click Edit
+Click New and add:
+%MAVEN_HOME%\bin
+
+Step 5 — Verify
+Close your current CMD window completely (old window won't pick up new PATH), open a fresh one and run:
+mvn -version
+You should see something like:
+Apache Maven 3.9.x
+Maven home: C:\Program Files\Apache\maven
+Java version: 1.8.x, vendor: ...
