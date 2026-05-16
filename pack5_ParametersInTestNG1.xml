@@ -2,12 +2,12 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="TestingAnnotationsSuite">
     <parameter name="browserName" value="Chrome"></parameter>
-    <parameter name="url" value="https://studyasl11-osondemand.orangehrm.com/auth/login"></parameter>
+    <parameter name="url" value="https://ashishsamal-trials80.orangehrmlive.com"></parameter>
     <parameter name="sleepValue" value="3000"></parameter>
     <test name="VerifyLogin">
-        <parameter name="browserName" value="firefox"></parameter>
+        <parameter name="browserName" value="chrome"></parameter>
         <parameter name="username" value="Admin"></parameter>
-        <parameter name="password" value="admin123"></parameter>
+        <parameter name="password" value="N9aq@Ef1PM"></parameter>
         <classes>
             <class name="pack5_ParametersInTestNG.ParametersConceptInTestNG_UsingOrangeHRM">
                 <methods>
@@ -20,7 +20,7 @@
     </test>
     <test name="VerifyAddEmployeeTab">
         <parameter name="username" value="Admin"></parameter>
-        <parameter name="password" value="admin123"></parameter>
+        <parameter name="password" value="N9aq@Ef1PM"></parameter>
         <classes>
             <class name="pack5_ParametersInTestNG.ParametersConceptInTestNG_UsingOrangeHRM">
                 <methods>

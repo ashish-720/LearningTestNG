@@ -9,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -45,29 +47,33 @@ public class ParametersOptionalConcept {
 
     @Parameters({"username","password"})
     @Test
-    public void loginToApp(@Optional("Admin") String user, @Optional("admin123") String password) {
-        WebElement usernameElement = driver.findElement(By.xpath("//input[@name='username']"));
+    public void loginToApp(@Optional("Admin") String user, @Optional("N9aq@Ef1PM") String password) {
+        WebElement usernameElement = driver.findElement(By.xpath("//input[@name='txtUsername']"));
         usernameElement.sendKeys(user);
-        WebElement passwordElement = driver.findElement(By.xpath("//input[@name='password']"));
+        WebElement passwordElement = driver.findElement(By.xpath("//input[@name='txtPassword']"));
         passwordElement.sendKeys(password, Keys.ENTER);
     }
 
     @Test
     public void verifyLogin() {
-        String profileName = driver.findElement(By.cssSelector(".oxd-userdropdown-name")).getText();
+        WebDriverWait webDriverWait = new WebDriverWait(driver, 5);
+        webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#sidebar-profile-picture a.name")));
+        String profileName = driver.findElement(By.cssSelector("#sidebar-profile-picture a.name")).getText();
         System.out.println(profileName);
     }
 
     @Parameters("sleepValue")
     @Test
     public void addEmployee(Long sleep) {
-        driver.findElement(By.xpath("//li[@class='oxd-topbar-body-nav-tab']/a[text()='Add Employee']")).click();
+        driver.findElement(By.xpath("//div[@id='top-ribbon-menu']//a[contains(text(),'Employee List')]")).click();
         try {
             Thread.sleep(sleep);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(driver.findElement(By.cssSelector(".orangehrm-main-title")).getText());
+        WebDriverWait webDriverWait = new WebDriverWait(driver, 4);
+        webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("pim-container")));
+        System.out.println(driver.findElement(By.cssSelector(".pim-container #addEmployeeButton i")).getText());
     }
 
     @AfterTest

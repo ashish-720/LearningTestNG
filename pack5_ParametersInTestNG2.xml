@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="TestingAnnotationsSuite">
-    <parameter name="url" value="https://studyasl11-osondemand.orangehrm.com/auth/login"></parameter>
+    <parameter name="url" value="https://ashishsamal-trials80.orangehrmlive.com"></parameter>
     <parameter name="sleepValue" value="3000"></parameter>
     <test name="VerifyLogin">
         <classes>
