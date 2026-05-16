@@ -21,7 +21,7 @@ public class OrangeHRM1 {
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
-        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+        driver.get("https://studyasl11-osondemand.orangehrm.com/auth/login");
     }
 
     @Test
@@ -29,7 +29,7 @@ public class OrangeHRM1 {
         WebElement username = driver.findElement(By.xpath("//input[@name='username']"));
         username.sendKeys("Admin");
         WebElement password = driver.findElement(By.xpath("//input[@name='password']"));
-        password.sendKeys("admin123", Keys.ENTER);
+        password.sendKeys("PRtx6O3@@@zR", Keys.ENTER);
     }
 
     @Test

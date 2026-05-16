@@ -11,6 +11,9 @@ import org.testng.annotations.Test;
 public class FirstTestNG {
     @Test
     public void testGoogle() {
+        //System.setProperty("webdriver.chrome.driver", "path/to/chromedriver.exe");
+        //System.setProperty("webdriver.gecko.driver", "path/to/chromedriver.exe");
+        //System.setProperty("webdriver.edge.driver", "path/to/chromedriver.exe");
         WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.google.com/");
