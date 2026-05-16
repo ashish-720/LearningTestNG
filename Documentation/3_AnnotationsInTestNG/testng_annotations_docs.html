@@ -1,0 +1,610 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+
+.doc-root { padding: 1.5rem 0; }
+
+.hero { margin-bottom: 2rem; }
+.hero h1 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; }
+.hero p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.tab { padding: 6px 14px; font-size: 13px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); cursor: pointer; background: transparent; color: var(--color-text-secondary); transition: all .15s; }
+.tab:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+.tab.active { background: var(--color-background-secondary); color: var(--color-text-primary); border-color: var(--color-border-primary); font-weight: 500; }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* Lifecycle diagram */
+.lifecycle { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; }
+.lifecycle-title { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: .04em; }
+.flow { display: flex; flex-direction: column; gap: 0; }
+
+.scope-group { display: flex; flex-direction: column; gap: 2px; }
+.scope-label { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); letter-spacing: .06em; text-transform: uppercase; padding: 4px 0 2px; }
+.anno-row { display: flex; align-items: center; gap: 8px; }
+.anno-box { flex: 1; padding: 8px 12px; border-radius: var(--border-radius-md); border: 0.5px solid; font-size: 13px; font-weight: 500; cursor: pointer; transition: opacity .15s; display: flex; align-items: center; justify-content: space-between; }
+.anno-box:hover { opacity: .85; }
+.anno-box .badge { font-size: 11px; font-weight: 400; padding: 2px 7px; border-radius: 10px; }
+.connector { width: 2px; height: 14px; background: var(--color-border-secondary); margin-left: 50%; }
+
+.before { background: #E1F5EE; border-color: #0F6E56; color: #085041; }
+.before .badge { background: #9FE1CB; color: #04342C; }
+.after  { background: #FAECE7; border-color: #993C1D; color: #71280f; }
+.after  .badge { background: #F5C4B3; color: #4A1B0C; }
+.method-box { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+.method-box .badge { background: #C0DD97; color: #173404; }
+
+/* Annotation detail cards */
+.anno-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+.anno-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.1rem; cursor: pointer; transition: border-color .15s; }
+.anno-card:hover { border-color: var(--color-border-primary); }
+.anno-card.selected { border-color: #1D9E75; border-width: 1.5px; }
+.anno-card .tag { display: inline-block; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 10px; margin-bottom: 8px; }
+.anno-card h3 { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; font-family: var(--font-mono); }
+.anno-card p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+
+.detail-pane { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1.25rem; }
+.detail-pane h2 { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; font-family: var(--font-mono); }
+.detail-pane .meta { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 12px; line-height: 1.5; }
+.detail-pane .meta span { font-weight: 500; color: var(--color-text-primary); }
+
+pre { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 12px 14px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; overflow-x: auto; color: var(--color-text-primary); margin-bottom: 12px; }
+.kw { color: #0F6E56; font-weight: 500; }
+.ann { color: #185FA5; font-weight: 500; }
+.cm { color: var(--color-text-tertiary); font-style: italic; }
+.str { color: #854F0B; }
+.out-label { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.output { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-left: 3px solid #3B6D11; border-radius: var(--border-radius-md); padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; line-height: 1.8; color: var(--color-text-secondary); }
+
+/* Full example tab */
+.section-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin: 1.25rem 0 8px; }
+.note { background: #E6F1FB; border: 0.5px solid #185FA5; border-radius: var(--border-radius-md); padding: 10px 14px; font-size: 12px; color: #0C447C; line-height: 1.6; margin-bottom: 12px; }
+.note strong { color: #042C53; }
+
+/* Order table */
+.order-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.order-table th { text-align: left; font-weight: 500; color: var(--color-text-secondary); font-size: 12px; border-bottom: 0.5px solid var(--color-border-tertiary); padding: 6px 10px; }
+.order-table td { padding: 8px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); }
+.order-table tr:last-child td { border-bottom: none; }
+.order-table td:first-child { font-family: var(--font-mono); font-size: 12px; }
+.badge-b { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: 500; }
+.b-suite { background:#E1F5EE; color:#04342C; }
+.b-test  { background:#E6F1FB; color:#042C53; }
+.b-class { background:#FAEEDA; color:#412402; }
+.b-method{ background:#EAF3DE; color:#173404; }
+.b-test-run{ background:#FAECE7; color:#4A1B0C; }
+</style>
+
+<div class="doc-root">
+  <div class="hero">
+    <h1>TestNG Annotations</h1>
+    <p>Configuration annotations that control the setup and teardown lifecycle of your test suite — from suite-wide initialization down to per-method cleanup.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showPanel('lifecycle')">Lifecycle Flow</button>
+    <button class="tab" onclick="showPanel('reference')">Annotation Reference</button>
+    <button class="tab" onclick="showPanel('example')">Full Example</button>
+    <button class="tab" onclick="showPanel('order')">Execution Order</button>
+  </div>
+
+  <!-- LIFECYCLE PANEL -->
+  <div id="panel-lifecycle" class="panel active">
+    <div class="lifecycle">
+      <div class="lifecycle-title">Execution order — outermost to innermost</div>
+      <div class="flow">
+        <div class="scope-group">
+          <div class="scope-label">Suite scope</div>
+          <div class="anno-row">
+            <div class="anno-box before" onclick="showRef('BeforeSuite')">
+              <span>@BeforeSuite</span>
+              <span class="badge">Runs once</span>
+            </div>
+          </div>
+          <div class="connector"></div>
+        </div>
+        <div class="scope-group">
+          <div class="scope-label">Test (XML &lt;test&gt;) scope</div>
+          <div class="anno-row">
+            <div class="anno-box before" onclick="showRef('BeforeTest')" style="background:#E6F1FB;border-color:#185FA5;color:#042C53;">
+              <span>@BeforeTest</span>
+              <span class="badge" style="background:#B5D4F4;color:#042C53;">Per &lt;test&gt; tag</span>
+            </div>
+          </div>
+          <div class="connector"></div>
+        </div>
+        <div class="scope-group">
+          <div class="scope-label">Class scope</div>
+          <div class="anno-row">
+            <div class="anno-box before" onclick="showRef('BeforeClass')" style="background:#FAEEDA;border-color:#854F0B;color:#412402;">
+              <span>@BeforeClass</span>
+              <span class="badge" style="background:#FAC775;color:#412402;">Per class</span>
+            </div>
+          </div>
+          <div class="connector"></div>
+        </div>
+        <div class="scope-group">
+          <div class="scope-label">Method scope</div>
+          <div class="anno-row">
+            <div class="anno-box before" onclick="showRef('BeforeMethod')" style="background:#EAF3DE;border-color:#3B6D11;color:#27500A;">
+              <span>@BeforeMethod</span>
+              <span class="badge" style="background:#C0DD97;color:#173404;">Before each @Test</span>
+            </div>
+          </div>
+          <div class="connector"></div>
+          <div class="anno-row">
+            <div class="anno-box method-box" onclick="showRef('Test')">
+              <span>@Test method runs</span>
+              <span class="badge">Your test logic</span>
+            </div>
+          </div>
+          <div class="connector"></div>
+          <div class="anno-row">
+            <div class="anno-box after" onclick="showRef('AfterMethod')" style="background:#EAF3DE;border-color:#3B6D11;color:#27500A;">
+              <span>@AfterMethod</span>
+              <span class="badge" style="background:#C0DD97;color:#173404;">After each @Test</span>
+            </div>
+          </div>
+          <div class="connector"></div>
+        </div>
+        <div class="scope-group">
+          <div class="anno-row">
+            <div class="anno-box after" onclick="showRef('AfterClass')" style="background:#FAEEDA;border-color:#854F0B;color:#412402;">
+              <span>@AfterClass</span>
+              <span class="badge" style="background:#FAC775;color:#412402;">Per class</span>
+            </div>
+          </div>
+          <div class="connector"></div>
+          <div class="anno-row">
+            <div class="anno-box after" onclick="showRef('AfterTest')" style="background:#E6F1FB;border-color:#185FA5;color:#042C53;">
+              <span>@AfterTest</span>
+              <span class="badge" style="background:#B5D4F4;color:#042C53;">Per &lt;test&gt; tag</span>
+            </div>
+          </div>
+          <div class="connector"></div>
+          <div class="anno-row">
+            <div class="anno-box after" onclick="showRef('AfterSuite')">
+              <span>@AfterSuite</span>
+              <span class="badge">Runs once</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--color-text-secondary)">Click any annotation above to jump to its reference card.</p>
+  </div>
+
+  <!-- REFERENCE PANEL -->
+  <div id="panel-reference" class="panel">
+    <div class="anno-grid">
+      <div class="anno-card" id="card-BeforeSuite" onclick="selectCard('BeforeSuite')">
+        <div class="tag" style="background:#E1F5EE;color:#04342C;">Suite</div>
+        <h3>@BeforeSuite</h3>
+        <p>Runs once before the entire suite. Use for global setup like DB connections, config loading, report initialization.</p>
+      </div>
+      <div class="anno-card" id="card-AfterSuite" onclick="selectCard('AfterSuite')">
+        <div class="tag" style="background:#FAECE7;color:#4A1B0C;">Suite</div>
+        <h3>@AfterSuite</h3>
+        <p>Runs once after all tests in the suite complete. Use for global teardown — closing DB pools, generating reports.</p>
+      </div>
+      <div class="anno-card" id="card-BeforeTest" onclick="selectCard('BeforeTest')">
+        <div class="tag" style="background:#E6F1FB;color:#042C53;">Test tag</div>
+        <h3>@BeforeTest</h3>
+        <p>Runs before any test method in the XML &lt;test&gt; tag. Useful for browser launch, environment setup per test group.</p>
+      </div>
+      <div class="anno-card" id="card-AfterTest" onclick="selectCard('AfterTest')">
+        <div class="tag" style="background:#FAECE7;color:#4A1B0C;">Test tag</div>
+        <h3>@AfterTest</h3>
+        <p>Runs after all test methods in the XML &lt;test&gt; tag complete. Use for browser quit, cleanup per test group.</p>
+      </div>
+      <div class="anno-card" id="card-BeforeClass" onclick="selectCard('BeforeClass')">
+        <div class="tag" style="background:#FAEEDA;color:#412402;">Class</div>
+        <h3>@BeforeClass</h3>
+        <p>Runs once before the first method in the current class. Page Object init, shared state setup per class.</p>
+      </div>
+      <div class="anno-card" id="card-AfterClass" onclick="selectCard('AfterClass')">
+        <div class="tag" style="background:#FAECE7;color:#4A1B0C;">Class</div>
+        <h3>@AfterClass</h3>
+        <p>Runs once after all test methods in the current class. Release class-level resources, log class results.</p>
+      </div>
+      <div class="anno-card" id="card-BeforeMethod" onclick="selectCard('BeforeMethod')">
+        <div class="tag" style="background:#EAF3DE;color:#173404;">Method</div>
+        <h3>@BeforeMethod</h3>
+        <p>Runs before each individual @Test method. Open browser, navigate to base URL, log in — fresh state per test.</p>
+      </div>
+      <div class="anno-card" id="card-AfterMethod" onclick="selectCard('AfterMethod')">
+        <div class="tag" style="background:#FAECE7;color:#4A1B0C;">Method</div>
+        <h3>@AfterMethod</h3>
+        <p>Runs after each individual @Test method. Take screenshots on failure, close browser, clear cookies.</p>
+      </div>
+    </div>
+
+    <div class="detail-pane" id="detail-pane">
+      <p style="font-size:13px;color:var(--color-text-secondary)">Click a card above to see a detailed example.</p>
+    </div>
+  </div>
+
+  <!-- FULL EXAMPLE PANEL -->
+  <div id="panel-example" class="panel">
+    <div class="note"><strong>Context:</strong> OrangeHRM regression suite — shows all 8 annotations working together in a realistic Selenium + TestNG setup. Each annotation calls a clearly named helper so the purpose is obvious at a glance.</div>
+    <div class="section-title">TestNG XML — testng.xml</div>
+    <pre><span class="cm">&lt;!-- testng.xml --&gt;</span>
+&lt;suite name=<span class="str">"OrangeHRM Suite"</span>&gt;
+  &lt;test name=<span class="str">"Login Tests"</span>&gt;
+    &lt;classes&gt;
+      &lt;class name=<span class="str">"tests.LoginTest"</span>/&gt;
+    &lt;/classes&gt;
+  &lt;/test&gt;
+  &lt;test name=<span class="str">"Dashboard Tests"</span>&gt;
+    &lt;classes&gt;
+      &lt;class name=<span class="str">"tests.DashboardTest"</span>/&gt;
+    &lt;/classes&gt;
+  &lt;/test&gt;
+&lt;/suite&gt;</pre>
+
+    <div class="section-title">BaseTest.java — all 8 annotations</div>
+    <pre><span class="kw">package</span> tests;
+
+<span class="kw">import</span> org.testng.annotations.*;
+<span class="kw">import</span> org.openqa.selenium.WebDriver;
+<span class="kw">import</span> org.openqa.selenium.chrome.ChromeDriver;
+
+<span class="kw">public class</span> BaseTest {
+
+    <span class="kw">protected</span> WebDriver driver;
+
+    <span class="cm">// ─── Suite scope (runs ONCE for the whole XML suite) ─────────────────</span>
+
+    <span class="ann">@BeforeSuite</span>
+    <span class="kw">public void</span> globalSetup() {
+        System.out.println(<span class="str">"[BeforeSuite] Loading config, setting up test DB..."</span>);
+        ConfigLoader.load(<span class="str">"qa.properties"</span>);
+        ReportManager.init();
+    }
+
+    <span class="ann">@AfterSuite</span>
+    <span class="kw">public void</span> globalTeardown() {
+        System.out.println(<span class="str">"[AfterSuite] Generating Extent Report, closing DB pool..."</span>);
+        ReportManager.flush();
+        Database.closePool();
+    }
+
+    <span class="cm">// ─── Test-tag scope (runs once per &lt;test&gt; in testng.xml) ─────────────</span>
+
+    <span class="ann">@BeforeTest</span>
+    <span class="kw">public void</span> browserSetup() {
+        System.out.println(<span class="str">"[BeforeTest] Launching Chrome..."</span>);
+        driver = <span class="kw">new</span> ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get(ConfigLoader.get(<span class="str">"base.url"</span>));
+    }
+
+    <span class="ann">@AfterTest</span>
+    <span class="kw">public void</span> browserTeardown() {
+        System.out.println(<span class="str">"[AfterTest] Closing browser..."</span>);
+        <span class="kw">if</span> (driver != <span class="kw">null</span>) driver.quit();
+    }
+
+    <span class="cm">// ─── Class scope (runs once per test class) ───────────────────────────</span>
+
+    <span class="ann">@BeforeClass</span>
+    <span class="kw">public void</span> classSetup() {
+        System.out.println(<span class="str">"[BeforeClass] Initialising Page Objects for "</span>
+            + getClass().getSimpleName());
+    }
+
+    <span class="ann">@AfterClass</span>
+    <span class="kw">public void</span> classTeardown() {
+        System.out.println(<span class="str">"[AfterClass] Releasing class-level resources..."</span>);
+    }
+
+    <span class="cm">// ─── Method scope (runs before/after EVERY @Test) ─────────────────────</span>
+
+    <span class="ann">@BeforeMethod</span>
+    <span class="kw">public void</span> methodSetup() {
+        System.out.println(<span class="str">"[BeforeMethod] Navigating to login page, clearing cookies..."</span>);
+        driver.manage().deleteAllCookies();
+        driver.navigate().to(ConfigLoader.get(<span class="str">"base.url"</span>));
+    }
+
+    <span class="ann">@AfterMethod</span>
+    <span class="kw">public void</span> methodTeardown(ITestResult result) {
+        <span class="kw">if</span> (result.getStatus() == ITestResult.FAILURE) {
+            System.out.println(<span class="str">"[AfterMethod] Test FAILED → taking screenshot..."</span>);
+            ScreenshotUtil.capture(driver, result.getName());
+        }
+        System.out.println(<span class="str">"[AfterMethod] Test '"</span> + result.getName() + <span class="str">"' done."</span>);
+    }
+}</pre>
+
+    <div class="section-title">LoginTest.java — inherits BaseTest</div>
+    <pre><span class="kw">public class</span> LoginTest <span class="kw">extends</span> BaseTest {
+
+    <span class="ann">@Test</span>
+    <span class="kw">public void</span> validLogin() {
+        driver.findElement(By.id(<span class="str">"txtUsername"</span>)).sendKeys(<span class="str">"Admin"</span>);
+        driver.findElement(By.id(<span class="str">"txtPassword"</span>)).sendKeys(<span class="str">"admin123"</span>);
+        driver.findElement(By.id(<span class="str">"btnLogin"</span>)).click();
+        Assert.assertTrue(driver.getTitle().contains(<span class="str">"Dashboard"</span>));
+    }
+
+    <span class="ann">@Test</span>
+    <span class="kw">public void</span> invalidLogin() {
+        driver.findElement(By.id(<span class="str">"txtUsername"</span>)).sendKeys(<span class="str">"wrong"</span>);
+        driver.findElement(By.id(<span class="str">"txtPassword"</span>)).sendKeys(<span class="str">"wrong"</span>);
+        driver.findElement(By.id(<span class="str">"btnLogin"</span>)).click();
+        Assert.assertTrue(driver.getPageSource().contains(<span class="str">"Invalid credentials"</span>));
+    }
+}</pre>
+
+    <div class="out-label">Console output (LoginTest — 2 test methods)</div>
+    <div class="output">
+[BeforeSuite]  Loading config, setting up test DB...<br>
+[BeforeTest]   Launching Chrome...<br>
+[BeforeClass]  Initialising Page Objects for LoginTest<br>
+<br>
+[BeforeMethod] Navigating to login page, clearing cookies...<br>
+--- validLogin ---<br>
+[AfterMethod]  Test 'validLogin' done.<br>
+<br>
+[BeforeMethod] Navigating to login page, clearing cookies...<br>
+--- invalidLogin ---<br>
+[AfterMethod]  Test 'invalidLogin' done.<br>
+<br>
+[AfterClass]   Releasing class-level resources...<br>
+[AfterTest]    Closing browser...<br>
+<br>
+[BeforeTest]   Launching Chrome...   ← next &lt;test&gt; tag starts<br>
+...<br>
+[AfterSuite]   Generating Extent Report, closing DB pool...
+    </div>
+  </div>
+
+  <!-- ORDER PANEL -->
+  <div id="panel-order" class="panel">
+    <div class="note"><strong>Key insight:</strong> @BeforeTest / @AfterTest correspond to the &lt;test&gt; XML tag — not to individual @Test methods. This is the most common source of confusion.</div>
+    <table class="order-table">
+      <thead>
+        <tr>
+          <th>Annotation</th>
+          <th>Scope</th>
+          <th>How many times?</th>
+          <th>Typical use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>@BeforeSuite</td>
+          <td><span class="badge-b b-suite">Suite</span></td>
+          <td>Once — very first</td>
+          <td>Config load, DB pool, report init</td>
+        </tr>
+        <tr>
+          <td>@BeforeTest</td>
+          <td><span class="badge-b b-test">Test tag</span></td>
+          <td>Once per &lt;test&gt; in XML</td>
+          <td>Launch browser, set environment</td>
+        </tr>
+        <tr>
+          <td>@BeforeClass</td>
+          <td><span class="badge-b b-class">Class</span></td>
+          <td>Once per test class</td>
+          <td>Page Object init, shared data</td>
+        </tr>
+        <tr>
+          <td>@BeforeMethod</td>
+          <td><span class="badge-b b-method">Method</span></td>
+          <td>Before EVERY @Test method</td>
+          <td>Navigate to URL, delete cookies, login</td>
+        </tr>
+        <tr>
+          <td>@Test</td>
+          <td><span class="badge-b b-test-run">Test run</span></td>
+          <td>Each test method</td>
+          <td>Your actual test assertions</td>
+        </tr>
+        <tr>
+          <td>@AfterMethod</td>
+          <td><span class="badge-b b-method">Method</span></td>
+          <td>After EVERY @Test method</td>
+          <td>Screenshot on fail, logout, clear state</td>
+        </tr>
+        <tr>
+          <td>@AfterClass</td>
+          <td><span class="badge-b b-class">Class</span></td>
+          <td>Once per test class</td>
+          <td>Release class-level resources</td>
+        </tr>
+        <tr>
+          <td>@AfterTest</td>
+          <td><span class="badge-b b-test">Test tag</span></td>
+          <td>Once per &lt;test&gt; in XML</td>
+          <td>Quit browser, cleanup per group</td>
+        </tr>
+        <tr>
+          <td>@AfterSuite</td>
+          <td><span class="badge-b b-suite">Suite</span></td>
+          <td>Once — very last</td>
+          <td>Flush reports, close DB, send email</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-title" style="margin-top:1.5rem">Quick-reference: alwaysRun attribute</div>
+    <pre><span class="cm">// Runs even if a dependency method failed</span>
+<span class="ann">@AfterMethod</span>(alwaysRun = <span class="kw">true</span>)
+<span class="kw">public void</span> safeTeardown() {
+    <span class="cm">// This will run even if @BeforeMethod threw an exception</span>
+    <span class="kw">if</span> (driver != <span class="kw">null</span>) driver.quit();
+}</pre>
+
+    <div class="section-title">Quick-reference: inheritance</div>
+    <pre><span class="cm">// Parent class</span>
+<span class="kw">public class</span> BaseTest {
+    <span class="ann">@BeforeMethod</span>
+    <span class="kw">public void</span> setup() { <span class="cm">/* runs for ALL child classes */</span> }
+}
+
+<span class="cm">// Child class — parent's @BeforeMethod runs FIRST</span>
+<span class="kw">public class</span> LoginTest <span class="kw">extends</span> BaseTest {
+    <span class="ann">@BeforeMethod</span>
+    <span class="kw">public void</span> extraSetup() { <span class="cm">/* runs AFTER parent's setup() */</span> }
+}</pre>
+  </div>
+
+</div>
+
+<script>
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+const details = {
+  BeforeSuite: {
+    tag: 'Suite scope', tagColor: '#E1F5EE', tagText: '#04342C',
+    runs: 'Once — before any test in the entire suite',
+    best: 'Loading properties files, initializing DB connection pools, starting report frameworks',
+    code: `<span class="ann">@BeforeSuite</span>
+<span class="kw">public void</span> globalSetup() {
+    <span class="cm">// Runs ONCE. Perfect for one-time expensive setup.</span>
+    System.setProperty(<span class="str">"webdriver.chrome.driver"</span>, <span class="str">"/usr/bin/chromedriver"</span>);
+    ConfigLoader.load(<span class="str">"src/test/resources/qa.properties"</span>);
+    ExtentReportManager.initReport(<span class="str">"OrangeHRM-Regression"</span>);
+    Database.initConnectionPool();
+    System.out.println(<span class="str">"Suite setup complete."</span>);
+}`,
+    out: `[BeforeSuite] Suite setup complete.`
+  },
+  AfterSuite: {
+    tag: 'Suite scope', tagColor: '#FAECE7', tagText: '#4A1B0C',
+    runs: 'Once — after ALL tests in the suite finish',
+    best: 'Flushing Extent/Allure reports, closing DB pools, sending email notifications',
+    code: `<span class="ann">@AfterSuite</span>
+<span class="kw">public void</span> globalTeardown() {
+    ExtentReportManager.flushReport(); <span class="cm">// write HTML report to disk</span>
+    Database.closePool();
+    EmailNotifier.sendResults(<span class="str">"qa-team@company.com"</span>);
+    System.out.println(<span class="str">"[AfterSuite] All done."</span>);
+}`,
+    out: `[AfterSuite] All done.`
+  },
+  BeforeTest: {
+    tag: 'Test-tag scope', tagColor: '#E6F1FB', tagText: '#042C53',
+    runs: 'Once per <test> tag in testng.xml',
+    best: 'Launching browser, setting base URL, creating WebDriver instance per test group',
+    code: `<span class="ann">@BeforeTest</span>
+<span class="kw">public void</span> launchBrowser() {
+    <span class="cm">// Runs once for each &lt;test&gt; in testng.xml — NOT per @Test method!</span>
+    driver = <span class="kw">new</span> ChromeDriver();
+    driver.manage().window().maximize();
+    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    driver.get(<span class="str">"https://opensource-demo.orangehrmlive.com"</span>);
+    System.out.println(<span class="str">"[BeforeTest] Browser launched."</span>);
+}`,
+    out: `[BeforeTest] Browser launched.   ← once per <test> XML tag`
+  },
+  AfterTest: {
+    tag: 'Test-tag scope', tagColor: '#FAECE7', tagText: '#4A1B0C',
+    runs: 'Once per <test> tag after all classes inside it finish',
+    best: 'Quitting browser, cleaning up environment per test group',
+    code: `<span class="ann">@AfterTest</span>
+<span class="kw">public void</span> closeBrowser() {
+    <span class="cm">// Runs once after ALL classes inside this &lt;test&gt; tag are done</span>
+    <span class="kw">if</span> (driver != <span class="kw">null</span>) {
+        driver.quit();
+        System.out.println(<span class="str">"[AfterTest] Browser closed."</span>);
+    }
+}`,
+    out: `[AfterTest] Browser closed.   ← once per <test> XML tag`
+  },
+  BeforeClass: {
+    tag: 'Class scope', tagColor: '#FAEEDA', tagText: '#412402',
+    runs: 'Once — before the first @Test method in this class',
+    best: 'Initializing Page Objects, loading test data specific to this class',
+    code: `<span class="ann">@BeforeClass</span>
+<span class="kw">public void</span> initPageObjects() {
+    <span class="cm">// Runs once per class. Shared across all @Test methods here.</span>
+    loginPage = <span class="kw">new</span> LoginPage(driver);
+    dashboardPage = <span class="kw">new</span> DashboardPage(driver);
+    testData = ExcelReader.readSheet(<span class="str">"LoginTestData"</span>);
+    System.out.println(<span class="str">"[BeforeClass] Page Objects ready."</span>);
+}`,
+    out: `[BeforeClass] Page Objects ready.`
+  },
+  AfterClass: {
+    tag: 'Class scope', tagColor: '#FAECE7', tagText: '#4A1B0C',
+    runs: 'Once — after the last @Test method in this class completes',
+    best: 'Releasing class-scoped resources, logging a class-level summary',
+    code: `<span class="ann">@AfterClass</span>
+<span class="kw">public void</span> cleanupClass() {
+    testData.close();      <span class="cm">// close Excel workbook</span>
+    loginPage = <span class="kw">null</span>;     <span class="cm">// help GC release page objects</span>
+    System.out.println(<span class="str">"[AfterClass] LoginTest class complete."</span>);
+}`,
+    out: `[AfterClass] LoginTest class complete.`
+  },
+  BeforeMethod: {
+    tag: 'Method scope', tagColor: '#EAF3DE', tagText: '#173404',
+    runs: 'Before EVERY single @Test method',
+    best: 'Ensuring clean browser state — delete cookies, navigate to base URL, log in',
+    code: `<span class="ann">@BeforeMethod</span>
+<span class="kw">public void</span> resetState() {
+    <span class="cm">// Runs before EACH @Test — gives every test a clean slate</span>
+    driver.manage().deleteAllCookies();
+    driver.navigate().to(<span class="str">"https://opensource-demo.orangehrmlive.com"</span>);
+    loginPage.enterUsername(<span class="str">"Admin"</span>);
+    loginPage.enterPassword(<span class="str">"admin123"</span>);
+    loginPage.clickLogin();
+    System.out.println(<span class="str">"[BeforeMethod] Logged in, ready."</span>);
+}`,
+    out: `[BeforeMethod] Logged in, ready.   ← repeated before each @Test`
+  },
+  AfterMethod: {
+    tag: 'Method scope', tagColor: '#FAECE7', tagText: '#4A1B0C',
+    runs: 'After EVERY single @Test method, pass or fail',
+    best: 'Screenshot capture on failure, logging test result, clearing session',
+    code: `<span class="ann">@AfterMethod</span>(alwaysRun = <span class="kw">true</span>)
+<span class="kw">public void</span> postTestCleanup(ITestResult result) {
+    <span class="cm">// ITestResult lets you react to pass/fail/skip</span>
+    <span class="kw">if</span> (result.getStatus() == ITestResult.FAILURE) {
+        String name = result.getName() + <span class="str">"_fail"</span>;
+        ScreenshotUtil.capture(driver, name);
+        System.out.println(<span class="str">"[AfterMethod] Screenshot saved: "</span> + name);
+    }
+    driver.manage().deleteAllCookies(); <span class="cm">// ready for next test</span>
+}`,
+    out: `[AfterMethod] Screenshot saved: invalidLogin_fail   ← on failure only`
+  }
+};
+
+function showRef(name) {
+  showPanel('reference');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab')[1].classList.add('active');
+  setTimeout(() => selectCard(name), 50);
+}
+
+function selectCard(name) {
+  document.querySelectorAll('.anno-card').forEach(c => c.classList.remove('selected'));
+  const card = document.getElementById('card-' + name);
+  if (card) { card.classList.add('selected'); card.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+  const d = details[name]; if (!d) return;
+  document.getElementById('detail-pane').innerHTML = `
+    <h2>${'@' + name}</h2>
+    <div class="meta">
+      <span style="display:inline-block;padding:3px 10px;border-radius:10px;background:${d.tagColor};color:${d.tagText};font-size:12px;font-weight:500;margin-bottom:8px">${d.tag}</span><br>
+      <b>Runs:</b> ${d.runs}<br>
+      <b>Best for:</b> ${d.best}
+    </div>
+    <pre>${d.code}</pre>
+    <div class="out-label">Console output</div>
+    <div class="output">${d.out}</div>
+  `;
+}
+</script>
